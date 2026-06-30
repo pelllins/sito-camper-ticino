@@ -1,4 +1,0 @@
-User-agent: *
-Disallow: /private/
-
-Sitemap: https://areacamperilticino.it/sitemap.xml
