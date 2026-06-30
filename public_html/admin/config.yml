@@ -1,0 +1,127 @@
+# Configurazione Decap CMS (ex Netlify CMS)
+# Per maggiori dettagli, visita: https://decapcms.org/docs/configuration-options/
+
+backend:
+  name: git-gateway
+  branch: main # Sostituisci con "master" se il tuo branch principale su GitHub è "master"
+
+publish_mode: editorial_workflow
+
+# ==============================================================================
+# NOTA SUI PERCORSI (PATHS):
+# Se il tuo repository Git contiene la cartella "public_html" (es. root -> public_html -> assets):
+# - cambia media_folder in: "public_html/assets/uploads"
+# - aggiungi "public_html/" davanti a ciascun percorso "file" sotto nelle collezioni (es. "public_html/content/home.json")
+#
+# Se il tuo repository Git coincide direttamente con la cartella del sito (es. root -> assets):
+# - lascia i percorsi così come sono impostati sotto ("assets/uploads" e "content/home.json")
+# ==============================================================================
+
+media_folder: "assets/uploads"
+public_folder: "/assets/uploads"
+
+collections:
+  - name: "pagine"
+    label: "Pagine e Sezioni"
+    files:
+      - file: "content/home.json"
+        label: "Home, Info e Chi Siamo"
+        name: "home"
+        format: "json"
+        fields:
+          - { label: "Titolo Hero (Riga 1 - Benvenuto)", name: "hero_welcome", widget: "string" }
+          - { label: "Titolo Hero (Riga 2 - Nome)", name: "hero_brand", widget: "string" }
+          - { label: "Sottotitolo Hero", name: "hero_desc", widget: "text" }
+          - { label: "Immagine di Sfondo Hero", name: "hero_image", widget: "image" }
+          
+          - { label: "Info - Etichetta Sezione (Label)", name: "info_label", widget: "string" }
+          - { label: "Info - Titolo Sezione", name: "info_title", widget: "string" }
+          - { label: "Info - Descrizione", name: "info_body", widget: "text" }
+          - { label: "Info - Immagine", name: "info_image", widget: "image" }
+          
+          - { label: "Chi Siamo - Etichetta Sezione (Label)", name: "chisiamo_label", widget: "string" }
+          - { label: "Chi Siamo - Titolo Sezione", name: "chisiamo_title", widget: "string" }
+          - { label: "Chi Siamo - Primo Paragrafo", name: "chisiamo_body_1", widget: "text" }
+          - { label: "Chi Siamo - Secondo Paragrafo", name: "chisiamo_body_2", widget: "text" }
+          - { label: "Chi Siamo - Immagine", name: "chisiamo_image", widget: "image" }
+
+      - file: "content/servizi.json"
+        label: "Servizi ed Esperienze"
+        name: "servizi"
+        format: "json"
+        fields:
+          - { label: "Servizi - Etichetta Sezione", name: "servizi_label", widget: "string" }
+          - { label: "Servizi - Titolo Sezione", name: "servizi_title", widget: "string" }
+          - { label: "Servizi - Descrizione Sezione", name: "servizi_body", widget: "text" }
+          - label: "Elenco dei Servizi"
+            name: "servizi_items"
+            widget: "list"
+            fields:
+              - { label: "Titolo Servizio", name: "title", widget: "string" }
+              - { label: "Descrizione", name: "desc", widget: "text" }
+              - label: "Icona"
+                name: "icon"
+                widget: "select"
+                options:
+                  - { label: "Camper / Piazzola", value: "camper" }
+                  - { label: "Servizi Igienici / Doccia", value: "toilet" }
+                  - { label: "Area Relax / Picnic", value: "relax" }
+                  - { label: "Camper Service / Carico Scarico", value: "water" }
+                default: "camper"
+
+          - { label: "Banner Posizione - Titolo", name: "banner_title", widget: "string" }
+          - { label: "Banner Posizione - Descrizione (Markdown)", name: "banner_desc", widget: "markdown", buttons: ["bold", "italic", "link"] }
+
+          - { label: "Esperienze - Etichetta Sezione", name: "esperienze_label", widget: "string" }
+          - { label: "Esperienze - Titolo Sezione", name: "esperienze_title", widget: "string" }
+          - { label: "Esperienze - Descrizione Sezione", name: "esperienze_body", widget: "text" }
+          - label: "Elenco delle Esperienze"
+            name: "esperienze_items"
+            widget: "list"
+            fields:
+              - { label: "Titolo Esperienza", name: "title", widget: "string" }
+              - { label: "Descrizione", name: "desc", widget: "text" }
+              - label: "Icona"
+                name: "icon"
+                widget: "select"
+                options:
+                  - { label: "Bussola (Escursioni)", value: "compass" }
+                  - { label: "Bicicletta (Ciclovie)", value: "bike" }
+                  - { label: "Borghi (Borghi Storici)", value: "village" }
+                  - { label: "Forchetta e Coltello (Sapori)", value: "food" }
+                default: "compass"
+
+          - { label: "Download Mappa - Titolo CTA", name: "mappa_title", widget: "string" }
+          - { label: "Download Mappa - Descrizione CTA", name: "mappa_desc", widget: "text" }
+          - { label: "Download Mappa - Mappa PDF", name: "mappa_file", widget: "file" }
+          - { label: "Download Mappa - Testo Bottone", name: "mappa_btn_text", widget: "string" }
+
+      - file: "content/contatti.json"
+        label: "Contatti, Mappa e Orari"
+        name: "contatti"
+        format: "json"
+        fields:
+          - { label: "Etichetta Sezione (Dove siamo)", name: "label", widget: "string" }
+          - { label: "Titolo Sezione (Vieni a trovarci)", name: "title", widget: "string" }
+          - { label: "Descrizione Sezione", name: "body", widget: "text" }
+          - { label: "Indirizzo Sosta", name: "indirizzo", widget: "text" }
+          - { label: "Telefono", name: "telefono", widget: "string" }
+          - { label: "Email di Contatto", name: "email", widget: "string" }
+          - { label: "Link Google Maps Iframe (src)", name: "mappa_iframe_url", widget: "string", hint: "Incolla qui solo l'attributo src dall'iframe generato su Google Maps." }
+          - { label: "Banner Informativo (es. Apertura imminente)", name: "banner_text", widget: "string" }
+          - { label: "Orari di Apertura (opzionale)", name: "orari", widget: "string", required: false }
+          - { label: "Prezzi o Informazioni Aggiuntive (opzionale)", name: "prezzi", widget: "string", required: false }
+
+      - file: "content/impostazioni.json"
+        label: "Impostazioni Globali e SEO"
+        name: "impostazioni"
+        format: "json"
+        fields:
+          - { label: "Logo Principale (Panna)", name: "logo", widget: "image" }
+          - { label: "Motto Footer", name: "footer_tagline", widget: "string" }
+          - { label: "Link Instagram (Completo)", name: "instagram", widget: "string", required: false }
+          - { label: "Link Facebook (Completo)", name: "facebook", widget: "string", required: false }
+          - { label: "Link WhatsApp (wa.me/...)", name: "whatsapp", widget: "string", required: false }
+          - { label: "Meta Titolo SEO", name: "meta_title", widget: "string" }
+          - { label: "Meta Descrizione SEO", name: "meta_desc", widget: "text" }
+          - { label: "Meta Keywords SEO", name: "meta_keywords", widget: "string" }

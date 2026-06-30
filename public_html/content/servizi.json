@@ -1,0 +1,58 @@
+{
+  "mappa_btn_text": "Scarica la Mappa",
+  "esperienze_label": "Cosa ti aspetta",
+  "servizi_items": [
+    {
+      "title": "Piazzole Attrezzate",
+      "desc": "Ampie piazzole con allaccio elettrico. Spazio e comfort garantiti per camper fino a 8 metri di lunghezza.",
+      "icon": "camper"
+    },
+    {
+      "title": "Servizi Igienici",
+      "desc": "Servizi igienici moderni e sempre puliti, docce calde e area lavanderia attrezzata per il massimo comfort durante il tuo soggiorno.",
+      "icon": "toilet"
+    },
+    {
+      "title": "Area Relax",
+      "desc": "Area relax con tavoli da picnic, barbecue e area giochi per bambini. Il posto perfetto per rilassarsi a contatto con la natura.",
+      "icon": "relax"
+    },
+    {
+      "title": "Camper Service",
+      "desc": "Area attrezzata per il carico dell'acqua e lo scarico delle acque grigie e nere.",
+      "icon": "water"
+    }
+  ],
+  "mappa_desc": "Esplora la Valle del Ticino: scarica la mappa ufficiale in formato PDF con tutti i percorsi ciclabili e pedonali consigliati per i nostri ospiti.",
+  "banner_desc": "Ci troviamo in una posizione ideale per spostarsi comodamente: a soli **50 metri** dalla stazione ferroviaria con collegamenti veloci per raggiungere **Milano Cadorna** (in 40 minuti) e **Novara** (in 15 minuti).",
+  "banner_title": "Posizione Strategica & Mobilita'",
+  "mappa_title": "Carta dei Percorsi Ciclopedonali",
+  "esperienze_title": "Esperienze indimenticabili\nnella Valle del Ticino",
+  "mappa_file": "assets/Carta dei percorsi ciclopedonali.pdf",
+  "esperienze_items": [
+    {
+      "title": "Escursioni nella natura",
+      "desc": "Sentieri immersi nella riserva naturale del Ticino, tra boschi, fauna selvatica e paesaggi mozzafiato.",
+      "icon": "compass"
+    },
+    {
+      "title": "Percorsi in bicicletta",
+      "desc": "Ciclovie lungo le sponde del fiume Ticino, adatte a tutta la famiglia, tra campagna e natura incontaminata.",
+      "icon": "bike"
+    },
+    {
+      "title": "Borghi storici",
+      "desc": "A pochi minuti, le ricchezze artistiche e culturali di Galliate, Novara e dei borghi storici della zona.",
+      "icon": "village"
+    },
+    {
+      "title": "Sapori del territorio",
+      "desc": "Degustazioni di prodotti tipici piemontesi, sagre locali e ristoranti del territorio per vivere la vera cucina della Valle del Ticino.",
+      "icon": "food"
+    }
+  ],
+  "esperienze_body": "Dalle escursioni a piedi in mezzo alla natura alle visite ai borghi storici, dai percorsi in bicicletta lungo il fiume alle degustazioni di prodotti tipici — la Valle del Ticino offre un'infinità di opportunità.",
+  "servizi_label": "I nostri servizi",
+  "servizi_title": "Tutto cio' di cui hai bisogno",
+  "servizi_body": "Offriamo una gamma completa di servizi per rendere la tua sosta in camper il più confortevole possibile. Pensiamo noi a tutto."
+}
