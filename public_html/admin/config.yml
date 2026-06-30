@@ -17,14 +17,14 @@ publish_mode: editorial_workflow
 # - lascia i percorsi così come sono impostati sotto ("assets/uploads" e "content/home.json")
 # ==============================================================================
 
-media_folder: "public_html/assets/uploads"
+media_folder: "assets/uploads"
 public_folder: "/assets/uploads"
 
 collections:
   - name: "pagine"
     label: "Pagine e Sezioni"
     files:
-      - file: "public_html/content/home.json"
+      - file: "content/home.json"
         label: "Home, Info e Chi Siamo"
         name: "home"
         format: "json"
@@ -45,7 +45,7 @@ collections:
           - { label: "Chi Siamo - Secondo Paragrafo", name: "chisiamo_body_2", widget: "text" }
           - { label: "Chi Siamo - Immagine", name: "chisiamo_image", widget: "image" }
 
-      - file: "public_html/content/servizi.json"
+      - file: "content/servizi.json"
         label: "Servizi ed Esperienze"
         name: "servizi"
         format: "json"
@@ -96,7 +96,7 @@ collections:
           - { label: "Download Mappa - Mappa PDF", name: "mappa_file", widget: "file" }
           - { label: "Download Mappa - Testo Bottone", name: "mappa_btn_text", widget: "string" }
 
-      - file: "public_html/content/contatti.json"
+      - file: "content/contatti.json"
         label: "Contatti, Mappa e Orari"
         name: "contatti"
         format: "json"
@@ -112,7 +112,7 @@ collections:
           - { label: "Orari di Apertura (opzionale)", name: "orari", widget: "string", required: false }
           - { label: "Prezzi o Informazioni Aggiuntive (opzionale)", name: "prezzi", widget: "string", required: false }
 
-      - file: "public_html/content/impostazioni.json"
+      - file: "content/impostazioni.json"
         label: "Impostazioni Globali e SEO"
         name: "impostazioni"
         format: "json"
