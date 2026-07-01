@@ -5,7 +5,7 @@ backend:
   name: git-gateway
   branch: main # Sostituisci con "master" se il tuo branch principale su GitHub è "master"
 
-publish_mode: editorial_workflow
+
 
 # ==============================================================================
 # NOTA SUI PERCORSI (PATHS):
