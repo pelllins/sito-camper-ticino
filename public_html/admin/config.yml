@@ -125,3 +125,63 @@ collections:
           - { label: "Meta Titolo SEO", name: "meta_title", widget: "string" }
           - { label: "Meta Descrizione SEO", name: "meta_desc", widget: "text" }
           - { label: "Meta Keywords SEO", name: "meta_keywords", widget: "string" }
+
+      - file: "public_html/content/prezzi.json"
+        label: "Tariffe e Prezzi"
+        name: "prezzi"
+        format: "json"
+        fields:
+          - { label: "Etichetta Sezione (Tariffe)", name: "prezzi_label", widget: "string" }
+          - { label: "Titolo Sezione", name: "prezzi_title", widget: "string" }
+          - { label: "Descrizione Sezione", name: "prezzi_body", widget: "text" }
+          - label: "Tariffe Stagionali"
+            name: "prezzi_seasons"
+            widget: "list"
+            fields:
+              - { label: "Nome Stagione (es. bassa)", name: "nome", widget: "string" }
+              - { label: "Periodo (es. dal 08.01. al 28.02)", name: "periodo", widget: "string" }
+              - { label: "Prezzo Standard (con corrente, es. € 18)", name: "prezzo_standard", widget: "string" }
+              - { label: "Prezzo Senza Corrente (es. € 15)", name: "prezzo_senza_corrente", widget: "string" }
+              - { label: "Classe Colore (es. bassa-stagione)", name: "color_class", widget: "string" }
+          - label: "Servizi Extra"
+            name: "prezzi_extra"
+            widget: "list"
+            fields:
+              - { label: "Nome Servizio", name: "nome", widget: "string" }
+              - { label: "Prezzo", name: "prezzo", widget: "string" }
+
+      - file: "public_html/content/recensioni.json"
+        label: "Recensioni"
+        name: "recensioni"
+        format: "json"
+        fields:
+          - { label: "Etichetta Sezione (Cosa dicono di noi)", name: "recensioni_label", widget: "string" }
+          - { label: "Titolo Sezione", name: "recensioni_title", widget: "string" }
+          - label: "Elenco Recensioni"
+            name: "recensioni_items"
+            widget: "list"
+            fields:
+              - { label: "Testo Recensione", name: "testo", widget: "text" }
+              - { label: "Nome Autore", name: "autore", widget: "string" }
+              - { label: "Iniziali Autore (es. MR)", name: "iniziali", widget: "string" }
+              - { label: "Valutazione (Stelle da 1 a 5)", name: "stelle", widget: "number", value_type: "float", min: 1, max: 5, step: 0.5, default: 5 }
+              - { label: "Link alla Recensione (opzionale)", name: "link", widget: "string", required: false }
+
+      - file: "public_html/content/galleria.json"
+        label: "Galleria Foto"
+        name: "galleria"
+        format: "json"
+        fields:
+          - { label: "Etichetta Sezione", name: "galleria_label", widget: "string" }
+          - { label: "Titolo Sezione", name: "galleria_title", widget: "string" }
+          - label: "Elenco Foto"
+            name: "galleria_items"
+            widget: "list"
+            label_singular: "Foto"
+            allow_add: true
+            minimize_collapsed: true
+            collapsed: true
+            summary: "{{fields.didascalia | default('Senza didascalia')}}"
+            fields:
+              - { label: "Immagine", name: "immagine", widget: "image" }
+              - { label: "Didascalia (opzionale)", name: "didascalia", widget: "string", required: false, hint: "Lascia vuoto per non mostrare la didascalia" }

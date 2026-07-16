@@ -1,0 +1,30 @@
+{
+  "galleria_label": "Galleria",
+  "galleria_title": "La nostra area sosta",
+  "galleria_items": [
+    {
+      "immagine": "assets/uploads/WhatsApp Image 2026-07-16 at 11.19.51.jpeg.webp",
+      "didascalia": ""
+    },
+    {
+      "immagine": "assets/uploads/immagine_hero.jpg.webp",
+      "didascalia": ""
+    },
+    {
+      "immagine": "assets/uploads/info.jpg.webp",
+      "didascalia": ""
+    },
+    {
+      "immagine": "assets/uploads/WhatsApp Image 2026-07-16 at 11.19.50.jpeg.webp",
+      "didascalia": ""
+    },
+    {
+      "immagine": "assets/uploads/WhatsApp Image 2026-07-16 at 11.19.50 (1).jpeg.webp",
+      "didascalia": ""
+    },
+    {
+      "immagine": "assets/uploads/WhatsApp Image 2026-07-16 at 11.19.50 (2).jpeg.webp",
+      "didascalia": ""
+    }
+  ]
+}

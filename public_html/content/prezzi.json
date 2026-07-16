@@ -1,0 +1,38 @@
+{
+  "prezzi_label": "Tariffe",
+  "prezzi_title": "I nostri prezzi",
+  "prezzi_body": "Consulta le tariffe stagionali in base al periodo del tuo soggiorno.",
+  "prezzi_seasons": [
+    {
+      "nome": "bassa",
+      "periodo": "dal 08.01. al 28.02",
+      "prezzo_standard": "€ 18",
+      "prezzo_senza_corrente": "€ 15",
+      "color_class": "bassa-stagione"
+    },
+    {
+      "nome": "media",
+      "periodo": "dal 01.03 al 30.04",
+      "prezzo_standard": "€ 20",
+      "prezzo_senza_corrente": "€ 17",
+      "color_class": "media-stagione"
+    },
+    {
+      "nome": "alta",
+      "periodo": "dal 01.05 al 10.09.",
+      "prezzo_standard": "€ 22",
+      "prezzo_senza_corrente": "€ 19",
+      "color_class": "alta-stagione"
+    }
+  ],
+  "prezzi_extra": [
+    {
+      "nome": "solo camper service",
+      "prezzo": "€ 10"
+    },
+    {
+      "nome": "lavatrice",
+      "prezzo": "€ 5"
+    }
+  ]
+}

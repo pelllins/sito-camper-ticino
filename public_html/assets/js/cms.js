@@ -12,17 +12,23 @@ document.addEventListener('DOMContentLoaded', () => {
 async function initCMS() {
     try {
         // Fetch all content JSON files in parallel
-        const [impostazioni, home, servizi, contatti] = await Promise.all([
-            fetchJSON('content/impostazioni.json'),
-            fetchJSON('content/home.json'),
-            fetchJSON('content/servizi.json'),
-            fetchJSON('content/contatti.json')
+        const [impostazioni, home, servizi, contatti, prezzi, recensioni, galleria] = await Promise.all([
+            fetchJSON('content/impostazioni.json').catch(() => null),
+            fetchJSON('content/home.json').catch(() => null),
+            fetchJSON('content/servizi.json').catch(() => null),
+            fetchJSON('content/contatti.json').catch(() => null),
+            fetchJSON('content/prezzi.json').catch(() => null),
+            fetchJSON('content/recensioni.json').catch(() => null),
+            fetchJSON('content/galleria.json').catch(() => null)
         ]);
 
         if (impostazioni) updateGlobalSettings(impostazioni);
         if (home) updateHomeSection(home);
         if (servizi) updateServiziSection(servizi);
         if (contatti) updateContattiSection(contatti);
+        if (prezzi) updatePrezziSection(prezzi);
+        if (recensioni) updateRecensioniSection(recensioni);
+        if (galleria) updateGalleriaSection(galleria);
 
     } catch (error) {
         console.warn('CMS Loader: Fallback to static HTML active. Error details:', error);
@@ -50,6 +56,15 @@ function parseMarkdown(text) {
         .replace(/\*([^*]+)\*/g, '<em>$1</em>')
         .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
         .replace(/\n/g, '<br>');
+}
+
+/**
+ * Helper to dynamically display navbar links only if their sections contain data
+ */
+function showNavbarLink(targetId) {
+    document.querySelectorAll(`.nav-condizionale[data-nav-target="${targetId}"]`).forEach(el => {
+        el.style.display = '';
+    });
 }
 
 /**
@@ -455,3 +470,452 @@ function updateContattiSection(data) {
         }
     }
 }
+
+/**
+ * 5. Prezzi
+ */
+function updatePrezziSection(data) {
+    if (!data) return;
+    
+    const prezziSection = document.getElementById('prezzi');
+    
+    // Se non ci sono tariffe stagionali, nascondi la sezione e termina
+    if (!data.prezzi_seasons || !Array.isArray(data.prezzi_seasons) || data.prezzi_seasons.length === 0) {
+        if (prezziSection) prezziSection.style.display = 'none';
+        return;
+    }
+    
+    // Mostra la sezione
+    if (prezziSection) prezziSection.style.display = '';
+
+    // Testi principali
+    const textMappings = {
+        prezzi_label: data.prezzi_label,
+        prezzi_title: data.prezzi_title,
+        prezzi_body: data.prezzi_body
+    };
+
+    for (const [key, val] of Object.entries(textMappings)) {
+        const el = document.querySelector(`[data-cms="${key}"]`);
+        if (el && val) el.textContent = val;
+    }
+
+
+    // Tariffe Stagionali
+    if (data.prezzi_seasons && Array.isArray(data.prezzi_seasons)) {
+        const contentContainer = document.querySelector('[data-cms-container="prezzi_content"]');
+        
+        if (contentContainer && data.prezzi_seasons.length > 0) {
+            showNavbarLink('prezzi');
+            contentContainer.innerHTML = '';
+            
+            // Crea un'unica card che ospiterà sia le tab che le tariffe
+            const mainCard = document.createElement('div');
+            mainCard.className = 'prezzo-card reveal-item visible';
+            mainCard.style.margin = '0 auto';
+            mainCard.style.maxWidth = '600px';
+            mainCard.style.padding = '32px';
+            
+            // Genera la testata interna con le tab
+            const tabsWrapper = document.createElement('div');
+            tabsWrapper.className = 'prezzi-tabs-inner';
+            
+            data.prezzi_seasons.forEach((season, index) => {
+                const btn = document.createElement('button');
+                btn.className = `prezzi-tab ${index === 0 ? 'active' : ''}`;
+                btn.textContent = season.nome;
+                btn.style.textTransform = 'capitalize';
+                btn.addEventListener('click', () => {
+                    mainCard.querySelectorAll('.prezzi-tab').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    updateCardData(season);
+                });
+                tabsWrapper.appendChild(btn);
+            });
+            
+            mainCard.appendChild(tabsWrapper);
+            
+            // Contenitore per i dati della stagione (titolo, date, tariffe)
+            const infoContainer = document.createElement('div');
+            infoContainer.className = 'fade-in';
+            mainCard.appendChild(infoContainer);
+            
+            // Funzione per aggiornare i dati interni alla card
+            function updateCardData(season) {
+                // Aggiungiamo un piccolo effetto fade
+                infoContainer.style.opacity = '0';
+                infoContainer.style.transform = 'translateY(8px)';
+                infoContainer.style.transition = 'opacity 0.2s, transform 0.2s';
+                
+                setTimeout(() => {
+                    infoContainer.innerHTML = `
+                        <div style="border-bottom: 1px solid var(--cream-dark); padding-bottom: 16px; margin-bottom: 24px; text-align: left;">
+                            <h3 class="prezzo-titolo" style="margin: 0 0 4px 0; text-transform: capitalize;">${season.nome} Stagione</h3>
+                            <div class="prezzo-durata" style="margin: 0; color: var(--brown); font-size: 0.95rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">${season.periodo}</div>
+                        </div>
+                        <div style="text-align: left;">
+                            <ul style="margin: 0; padding: 0; list-style: none;">
+                                <li style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding: 16px; background: rgba(26,60,40,0.02); border-radius: 8px; gap: 16px;">
+                                    <span style="font-weight: 500; font-size: 0.95rem; color: var(--text-dark); line-height: 1.3;">Piazzola senza corrente</span>
+                                    <span style="font-size: 1.8rem; font-weight: 900; color: var(--brown); font-family: 'Outfit', sans-serif; white-space: nowrap; flex-shrink: 0;">${season.prezzo_senza_corrente}</span>
+                                </li>
+                                <li style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0; padding: 16px; background: rgba(26,60,40,0.06); border-radius: 8px; border: 1px solid rgba(26,60,40,0.1); gap: 16px;">
+                                    <span style="font-weight: 500; font-size: 0.95rem; color: var(--green); line-height: 1.3;">Piazzola standard <small style="font-weight:400; opacity:0.8; display: inline-block;">(corrente incl.)</small></span>
+                                    <span style="font-size: 2.2rem; font-weight: 900; color: var(--green); font-family: 'Outfit', sans-serif; white-space: nowrap; flex-shrink: 0;">${season.prezzo_standard}</span>
+                                </li>
+                            </ul>
+                        </div>
+                    `;
+                    infoContainer.style.opacity = '1';
+                    infoContainer.style.transform = 'translateY(0)';
+                }, 150);
+            }
+            
+            // Inizializza con la prima stagione
+            updateCardData(data.prezzi_seasons[0]);
+            contentContainer.appendChild(mainCard);
+        }
+    }
+
+    // Extra
+    if (data.prezzi_extra && Array.isArray(data.prezzi_extra)) {
+        const extraContainer = document.querySelector('[data-cms-container="prezzi_extra"]');
+        if (extraContainer && data.prezzi_extra.length > 0) {
+            extraContainer.innerHTML = '';
+            data.prezzi_extra.forEach(extra => {
+                const card = document.createElement('div');
+                card.className = 'prezzo-card extra-card reveal-item visible';
+                card.style.cssText = 'margin: 24px auto 0; max-width: 600px; padding: 24px 32px; display: flex; justify-content: space-between; align-items: center; background: white;';
+                card.innerHTML = `
+                    <h3 style="margin: 0; font-size: 1.1rem; font-family: var(--font-display); letter-spacing: 0.5px; color: var(--green); text-transform: capitalize; white-space: nowrap;">${extra.nome}</h3>
+                    <span style="font-size: 1.7rem; font-weight: 800; font-family: 'Outfit', sans-serif; color: var(--brown); white-space: nowrap; flex-shrink: 0;">${extra.prezzo}</span>
+                `;
+                extraContainer.appendChild(card);
+            });
+        }
+    }
+}
+
+/**
+ * 6. Recensioni
+ */
+function updateRecensioniSection(data) {
+    if (!data) return;
+    
+    const recensioniSection = document.getElementById('recensioni');
+    
+    // Se non ci sono recensioni, nascondi e termina
+    if (!data.recensioni_items || !Array.isArray(data.recensioni_items) || data.recensioni_items.length === 0) {
+        if (recensioniSection) recensioniSection.style.display = 'none';
+        return;
+    }
+    
+    // Mostra la sezione e il relativo link della navbar
+    if (recensioniSection) recensioniSection.style.display = '';
+    showNavbarLink('recensioni');
+
+    // Testi principali
+    const textMappings = {
+        recensioni_label: data.recensioni_label,
+        recensioni_title: data.recensioni_title
+    };
+
+    for (const [key, val] of Object.entries(textMappings)) {
+        const el = document.querySelector(`[data-cms="${key}"]`);
+        if (el && val) el.textContent = val;
+    }
+
+    // Helper per generare le stelle SVG (supporta mezze stelle ed è personalizzabile)
+    function generateStarsHTML(rating, reviewId) {
+        let starsHTML = '';
+        const fullStars = Math.floor(rating);
+        const hasHalf = rating % 1 >= 0.5;
+        
+        // Definisce un gradiente SVG per la mezza stella per questa card (in modo sicuro per il rendering del browser)
+        const gradientId = `half-star-grad-${reviewId}`;
+        starsHTML += `
+            <svg style="position: absolute; width: 0; height: 0; overflow: hidden;" aria-hidden="true">
+                <defs>
+                    <linearGradient id="${gradientId}" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="50%" stop-color="#ffffff" />
+                        <stop offset="50%" stop-color="rgba(247, 243, 218, 0.15)" />
+                    </linearGradient>
+                </defs>
+            </svg>
+        `;
+
+        for (let i = 1; i <= 5; i++) {
+            let fill = 'rgba(247, 243, 218, 0.15)'; // Colore spento di default (semi-trasparente)
+            if (i <= fullStars) {
+                fill = '#ffffff'; // Stella piena
+            } else if (i === fullStars + 1 && hasHalf) {
+                fill = `url(#${gradientId})`; // Stella a metà
+            }
+
+            starsHTML += `
+                <svg class="review-star" viewBox="0 0 24 24" fill="${fill}" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"/>
+                </svg>
+            `;
+        }
+        return starsHTML;
+    }
+
+    // Renderizza le card
+    const container = document.querySelector('[data-cms-container="recensioni_items"]');
+    if (container) {
+        container.innerHTML = '';
+        data.recensioni_items.forEach((item, index) => {
+            const card = document.createElement('div');
+            card.className = 'review-card reveal-item visible';
+            const rating = typeof item.stelle === 'number' ? item.stelle : 5;
+            
+            card.innerHTML = `
+                <div class="review-stars">${generateStarsHTML(rating, index)}</div>
+                <p class="review-text">"${item.testo}"</p>
+                <div class="review-author">
+                    <div class="author-avatar">${item.iniziali || item.autore.substring(0, 2).toUpperCase()}</div>
+                    <span class="author-name">${item.autore}</span>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    }
+}
+
+/**
+ * 7. Galleria
+ */
+function updateGalleriaSection(data) {
+    if (!data) return;
+
+    const galleriaSection = document.getElementById('galleria');
+
+    if (!data.galleria_items || !Array.isArray(data.galleria_items) || data.galleria_items.length === 0) {
+        if (galleriaSection) galleriaSection.style.display = 'none';
+        return;
+    }
+
+    if (galleriaSection) galleriaSection.style.display = '';
+    showNavbarLink('galleria');
+
+    // Testi sezione
+    const textMappings = { galleria_label: data.galleria_label, galleria_title: data.galleria_title };
+    for (const [key, val] of Object.entries(textMappings)) {
+        const el = document.querySelector(`[data-cms="${key}"]`);
+        if (el && val) el.textContent = val;
+    }
+
+    const items = data.galleria_items.filter(i => i.immagine);
+    const getLimit = () => {
+        const width = window.innerWidth;
+        if (width < 480) return 3;   // Mobile (1 colonna, mostra 3)
+        if (width < 768) return 4;   // Tablet (2 colonne, mostra 4)
+        return 6;                    // Desktop (3 colonne, mostra 6)
+    };
+
+    let currentIndex = 0;
+    let expanded = false;
+
+    // ---- Lightbox (condiviso) ----
+    const existingLb = document.getElementById('lightbox-overlay');
+    if (existingLb) existingLb.remove();
+
+    const overlay = document.createElement('div');
+    overlay.id = 'lightbox-overlay';
+    overlay.className = 'lightbox-overlay';
+    overlay.innerHTML = `
+        <button class="lightbox-close" id="lb-close" aria-label="Chiudi">&#10005;</button>
+        <div class="lightbox-main">
+            <button class="lightbox-arrow prev" id="lb-prev" aria-label="Precedente">&#8249;</button>
+            <img class="lightbox-img" id="lb-img" src="" alt="">
+            <button class="lightbox-arrow next" id="lb-next" aria-label="Successiva">&#8250;</button>
+        </div>
+        <div class="lightbox-caption" id="lb-caption"></div>
+        <div class="lightbox-thumbs" id="lb-thumbs"></div>
+    `;
+    document.body.appendChild(overlay);
+
+    const lbImg = overlay.querySelector('#lb-img');
+    const lbCaption = overlay.querySelector('#lb-caption');
+    const lbThumbs = overlay.querySelector('#lb-thumbs');
+
+    // Miniature lightbox — deferred: caricano solo quando il lightbox viene aperto
+    items.forEach((item, i) => {
+        const thumb = document.createElement('img');
+        thumb.dataset.src = item.immagine;
+        thumb.alt = item.didascalia || '';
+        thumb.className = 'lightbox-thumb';
+        thumb.addEventListener('click', () => goTo(i));
+        lbThumbs.appendChild(thumb);
+    });
+
+    // Carica tutte le miniature al primo open del lightbox
+    let thumbsLoaded = false;
+    function ensureThumbsLoaded() {
+        if (thumbsLoaded) return;
+        thumbsLoaded = true;
+        lbThumbs.querySelectorAll('img[data-src]').forEach(t => {
+            t.src = t.dataset.src;
+            delete t.dataset.src;
+        });
+    }
+
+    function goTo(index) {
+        currentIndex = (index + items.length) % items.length;
+        const item = items[currentIndex];
+        
+        // Cambio immediato e sincrono per evitare ghosting e sovrapposizioni
+        lbImg.src = item.immagine;
+        lbImg.alt = item.didascalia || '';
+        lbCaption.textContent = item.didascalia || '';
+        
+        lbThumbs.querySelectorAll('.lightbox-thumb').forEach((t, i) => t.classList.toggle('active', i === currentIndex));
+        const activeThumb = lbThumbs.querySelectorAll('.lightbox-thumb')[currentIndex];
+        if (activeThumb) activeThumb.scrollIntoView({ inline: 'center', behavior: 'smooth', block: 'nearest' });
+    }
+
+    function openLightbox(index) {
+        // Se la grid-modal mobile è aperta, chiudila prima
+        const gm = document.getElementById('galleria-modal');
+        if (gm) gm.classList.remove('active');
+        ensureThumbsLoaded();
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        goTo(index);
+    }
+
+    function closeLightbox() {
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    overlay.querySelector('#lb-close').addEventListener('click', closeLightbox);
+    overlay.querySelector('#lb-prev').addEventListener('click', () => goTo(currentIndex - 1));
+    overlay.querySelector('#lb-next').addEventListener('click', () => goTo(currentIndex + 1));
+    overlay.addEventListener('click', e => { if (e.target === overlay) closeLightbox(); });
+
+    document.addEventListener('keydown', e => {
+        if (!overlay.classList.contains('active')) return;
+        if (e.key === 'ArrowRight') goTo(currentIndex + 1);
+        if (e.key === 'ArrowLeft') goTo(currentIndex - 1);
+        if (e.key === 'Escape') closeLightbox();
+    });
+
+
+    // ---- Griglia principale ----
+    const container = document.querySelector('[data-cms-container="galleria_items"]');
+    if (!container) return;
+    container.innerHTML = '';
+
+    items.forEach((item, index) => {
+        const card = document.createElement('div');
+        card.className = 'galleria-item reveal-item visible';
+        const limit = getLimit();
+        const isVisible = index < limit;
+
+        if (isVisible) {
+            // Foto visibili subito: src normale, eager per le prime 3
+            card.innerHTML = `
+                <img src="${item.immagine}" alt="${item.didascalia || 'Galleria Il Ticino'}" class="galleria-img" loading="${index < 3 ? 'eager' : 'lazy'}">
+                ${item.didascalia ? `<div class="galleria-caption">${item.didascalia}</div>` : ''}
+            `;
+        } else {
+            // Foto nascoste: data-src, il browser NON le scarica
+            card.style.display = 'none';
+            card.innerHTML = `
+                <img data-src="${item.immagine}" alt="${item.didascalia || 'Galleria Il Ticino'}" class="galleria-img">
+                ${item.didascalia ? `<div class="galleria-caption">${item.didascalia}</div>` : ''}
+            `;
+        }
+
+        card.addEventListener('click', () => openLightbox(index));
+        container.appendChild(card);
+    });
+
+    // Attiva il src di tutte le immagini che sono visibili nella griglia
+    function revealVisibleImages() {
+        container.querySelectorAll('.galleria-item').forEach(card => {
+            if (card.style.display !== 'none') {
+                const img = card.querySelector('img[data-src]');
+                if (img) {
+                    img.src = img.dataset.src;
+                    delete img.dataset.src;
+                }
+            }
+        });
+    }
+
+    // Carica tutte le immagini (usata quando si espande la griglia o si apre il lightbox)
+    function loadAllGridImages() {
+        container.querySelectorAll('.galleria-item img[data-src]').forEach(img => {
+            img.src = img.dataset.src;
+            delete img.dataset.src;
+        });
+    }
+
+    // ---- Toggle button ----
+    const btnContainer = document.getElementById('galleria-btn-container');
+    
+    function updateToggleButton() {
+        if (!btnContainer) return;
+        btnContainer.innerHTML = '';
+
+        const limit = getLimit();
+        if (items.length > limit) {
+            const btn = document.createElement('button');
+            btn.className = 'galleria-toggle-btn';
+
+            const checkMobileBehavior = () => window.innerWidth < 480;
+
+            if (checkMobileBehavior()) {
+                // Mobile: apre il lightbox dalla prima foto (design unificato, no bottom sheet)
+                btn.textContent = 'Vedi tutte le foto';
+                btn.addEventListener('click', () => {
+                    ensureThumbsLoaded();
+                    loadAllGridImages();
+                    openLightbox(0);
+                });
+            } else {
+                // Tablet e Desktop: espansione inline
+                btn.textContent = expanded ? 'Nascondi foto' : 'Vedi altre foto';
+                btn.addEventListener('click', () => {
+                    loadAllGridImages(); // carica tutte le foto
+                    expanded = !expanded;
+                    const currentLimit = getLimit();
+                    container.querySelectorAll('.galleria-item').forEach((card, i) => {
+                        if (i >= currentLimit) card.style.display = expanded ? 'block' : 'none';
+                    });
+                    revealVisibleImages(); // assicura caricamento delle foto mostrate
+                    btn.textContent = expanded ? 'Nascondi foto' : 'Vedi altre foto';
+                });
+            }
+
+            btnContainer.appendChild(btn);
+        }
+    }
+
+    // Inizializza il bottone e rivela le immagini visibili al caricamento
+    revealVisibleImages();
+    updateToggleButton();
+
+    // Aggiorna comportamento al resize (es. rotazione schermo o ridimensionamento finestra)
+    window.addEventListener('resize', () => {
+        const limit = getLimit();
+        container.querySelectorAll('.galleria-item').forEach((card, i) => {
+            if (i < limit) {
+                card.style.display = 'block';
+            } else if (!expanded) {
+                card.style.display = 'none';
+            }
+        });
+        
+        // Carica le immagini che sono diventate visibili dopo il ridimensionamento
+        revealVisibleImages();
+        
+        // Rigenera il bottone dinamicamente per allinearsi al nuovo limite/comportamento dello schermo
+        updateToggleButton();
+    }, { passive: true });
+}
+
+

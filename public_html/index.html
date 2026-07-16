@@ -88,6 +88,9 @@
                 <li><a href="#servizi">Servizi</a></li>
                 <li><a href="#esperienze">Esperienze</a></li>
                 <li><a href="#chisiamo">Chi siamo</a></li>
+                <li class="nav-condizionale" data-nav-target="galleria" style="display: none;"><a href="#galleria">Galleria</a></li>
+                <li class="nav-condizionale" data-nav-target="recensioni" style="display: none;"><a href="#recensioni">Recensioni</a></li>
+                <li class="nav-condizionale" data-nav-target="prezzi" style="display: none;"><a href="#prezzi">Tariffe</a></li>
                 <li><a href="#contatti">Contattaci</a></li>
             </ul>
 
@@ -106,6 +109,9 @@
                 <li><a href="#servizi" class="mobile-link">Servizi</a></li>
                 <li><a href="#esperienze" class="mobile-link">Esperienze</a></li>
                 <li><a href="#chisiamo" class="mobile-link">Chi siamo</a></li>
+                <li class="nav-condizionale mobile-link-wrapper" data-nav-target="galleria" style="display: none;"><a href="#galleria" class="mobile-link">Galleria</a></li>
+                <li class="nav-condizionale mobile-link-wrapper" data-nav-target="recensioni" style="display: none;"><a href="#recensioni" class="mobile-link">Recensioni</a></li>
+                <li class="nav-condizionale mobile-link-wrapper" data-nav-target="prezzi" style="display: none;"><a href="#prezzi" class="mobile-link">Tariffe</a></li>
                 <li><a href="#contatti" class="mobile-link">Contattaci</a></li>
             </ul>
         </div>
@@ -364,15 +370,31 @@
         </div>
     </section>
 
-    <!-- ===================== RECENSIONI DISABILITATE TEMPORANEAMENTE =====================
-    <section id="recensioni" class="section-recensioni">
+    <!-- ===================== GALLERIA ===================== -->
+    <section id="galleria" class="section-galleria" style="display: none;">
         <div class="container">
             <div class="section-header reveal-container">
-                <span class="section-label">Cosa dicono di noi</span>
-                <h2 class="section-title">Parole dei nostri ospiti</h2>
+                <span class="section-label" data-cms="galleria_label">Galleria</span>
+                <h2 class="section-title" data-cms="galleria_title">La nostra area sosta</h2>
             </div>
-            <div class="reviews-grid reveal-container">
-                <div class="review-card reveal-item">
+            <div class="galleria-grid reveal-container" data-cms-container="galleria_items">
+                <!-- Vengono renderizzate dinamicamente da cms.js -->
+            </div>
+            
+            <div id="galleria-btn-container" style="text-align: center; margin-top: 48px;"></div>
+        </div>
+    </section>
+
+    <!-- ===================== RECENSIONI ===================== -->
+    <section id="recensioni" class="section-recensioni" style="display: none;">
+        <div class="container">
+            <div class="section-header reveal-container">
+                <span class="section-label light" data-cms="recensioni_label">Recensioni</span>
+                <h2 class="section-title light" data-cms="recensioni_title">Parole dei nostri ospiti</h2>
+            </div>
+            <div class="reviews-grid reveal-container" data-cms-container="recensioni_items">
+                <!-- Vengono renderizzate dinamicamente da cms.js -->
+                <div class="review-card reveal-item fallback-item">
                     <div class="review-stars">★★★★★</div>
                     <p class="review-text">"Un'area sosta ben curata e immersa nella natura. Ottima posizione per
                         esplorare la Valle del Ticino. Consigliatissimo!"</p>
@@ -381,7 +403,7 @@
                         <span class="author-name">Marco Rossi</span>
                     </div>
                 </div>
-                <div class="review-card reveal-item">
+                <div class="review-card reveal-item fallback-item">
                     <div class="review-stars">★★★★★</div>
                     <p class="review-text">"Servizi impeccabili e personale gentilissimo. Abbiamo trascorso un soggiorno
                         rilassante e piacevole. Torneremo sicuramente!"</p>
@@ -390,7 +412,7 @@
                         <span class="author-name">Laura Bianchi</span>
                     </div>
                 </div>
-                <div class="review-card reveal-item">
+                <div class="review-card reveal-item fallback-item">
                     <div class="review-stars">★★★★★</div>
                     <p class="review-text">"Posizione strategica per visitare i principali punti di interesse della
                         zona. Ottimo rapporto qualità-prezzo. Un'esperienza da ripetere!"</p>
@@ -402,7 +424,127 @@
             </div>
         </div>
     </section>
-    -->
+
+    <!-- ===================== PREZZI ===================== -->
+    <section id="prezzi" class="section-prezzi" style="display: none;">
+        <div class="container">
+            <div class="section-header text-center reveal-container">
+                <span class="section-label" data-cms="prezzi_label">Tariffe</span>
+                <h2 class="section-title" data-cms="prezzi_title">I nostri prezzi</h2>
+                <p class="section-body mx-auto" data-cms="prezzi_body">Scegli la tariffa più adatta alle tue esigenze.</p>
+            </div>
+            <div class="prezzi-tabs-wrapper reveal-container">
+                <!-- Fallback statico rimosso per brevità o gestito dal CMS -->
+                <div class="prezzi-content" data-cms-container="prezzi_content">
+                    <div class="prezzo-card fallback-item" style="margin: 0 auto; max-width: 600px; padding: 32px;" id="fallback-bassa">
+                        <div style="border-bottom: 1px solid var(--cream-dark); padding-bottom: 16px; margin-bottom: 24px; text-align: left;">
+                            <h3 class="prezzo-titolo" style="margin: 0 0 4px 0; text-transform: capitalize;">Bassa Stagione</h3>
+                            <div class="prezzo-durata" style="margin: 0; color: var(--brown); font-size: 0.95rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">dal 08.01. al 28.02</div>
+                        </div>
+                        
+                        <div style="text-align: left;">
+                            <ul style="margin: 0; padding: 0; list-style: none;">
+                                <li style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding: 16px; background: rgba(26,60,40,0.02); border-radius: 8px;">
+                                    <span style="font-weight: 500; font-size: 0.95rem; color: var(--text-dark);">Piazzola senza corrente</span>
+                                    <span style="font-size: 1.8rem; font-weight: 900; color: var(--brown); font-family: 'Outfit', sans-serif;">€ 15</span>
+                                </li>
+                                <li style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0; padding: 16px; background: rgba(26,60,40,0.06); border-radius: 8px; border: 1px solid rgba(26,60,40,0.1);">
+                                    <span style="font-weight: 500; font-size: 0.95rem; color: var(--green);">Piazzola standard <small style="font-weight:400; opacity:0.8;">(corrente incl.)</small></span>
+                                    <span style="font-size: 2.2rem; font-weight: 900; color: var(--green); font-family: 'Outfit', sans-serif;">€ 18</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="prezzo-card fallback-item" style="margin: 0 auto; max-width: 600px; padding: 32px; display: none;" id="fallback-media">
+                        <div style="border-bottom: 1px solid var(--cream-dark); padding-bottom: 16px; margin-bottom: 24px; text-align: left;">
+                            <h3 class="prezzo-titolo" style="margin: 0 0 4px 0; text-transform: capitalize;">Media Stagione</h3>
+                            <div class="prezzo-durata" style="margin: 0; color: var(--brown); font-size: 0.95rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">dal 01.03 al 30.04</div>
+                        </div>
+                        
+                        <div style="text-align: left;">
+                            <ul style="margin: 0; padding: 0; list-style: none;">
+                                <li style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding: 16px; background: rgba(26,60,40,0.02); border-radius: 8px;">
+                                    <span style="font-weight: 500; font-size: 0.95rem; color: var(--text-dark);">Piazzola senza corrente</span>
+                                    <span style="font-size: 1.8rem; font-weight: 900; color: var(--brown); font-family: 'Outfit', sans-serif;">€ 17</span>
+                                </li>
+                                <li style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0; padding: 16px; background: rgba(26,60,40,0.06); border-radius: 8px; border: 1px solid rgba(26,60,40,0.1);">
+                                    <span style="font-weight: 500; font-size: 0.95rem; color: var(--green);">Piazzola standard <small style="font-weight:400; opacity:0.8;">(corrente incl.)</small></span>
+                                    <span style="font-size: 2.2rem; font-weight: 900; color: var(--green); font-family: 'Outfit', sans-serif;">€ 20</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="prezzo-card fallback-item" style="margin: 0 auto; max-width: 600px; padding: 32px; display: none;" id="fallback-alta">
+                        <div style="border-bottom: 1px solid var(--cream-dark); padding-bottom: 16px; margin-bottom: 24px; text-align: left;">
+                            <h3 class="prezzo-titolo" style="margin: 0 0 4px 0; text-transform: capitalize;">Alta Stagione</h3>
+                            <div class="prezzo-durata" style="margin: 0; color: var(--brown); font-size: 0.95rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">dal 01.05 al 10.09</div>
+                        </div>
+                        
+                        <div style="text-align: left;">
+                            <ul style="margin: 0; padding: 0; list-style: none;">
+                                <li style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding: 16px; background: rgba(26,60,40,0.02); border-radius: 8px;">
+                                    <span style="font-weight: 500; font-size: 0.95rem; color: var(--text-dark);">Piazzola senza corrente</span>
+                                    <span style="font-size: 1.8rem; font-weight: 900; color: var(--brown); font-family: 'Outfit', sans-serif;">€ 19</span>
+                                </li>
+                                <li style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0; padding: 16px; background: rgba(26,60,40,0.06); border-radius: 8px; border: 1px solid rgba(26,60,40,0.1);">
+                                    <span style="font-weight: 500; font-size: 0.95rem; color: var(--green);">Piazzola standard <small style="font-weight:400; opacity:0.8;">(corrente incl.)</small></span>
+                                    <span style="font-size: 2.2rem; font-weight: 900; color: var(--green); font-family: 'Outfit', sans-serif;">€ 22</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="prezzi-extra" data-cms-container="prezzi_extra">
+                    <div class="prezzo-card extra-card fallback-item" style="margin: 24px auto 0; max-width: 600px; padding: 24px 32px; display: flex; justify-content: space-between; align-items: center; background: white;">
+                        <div style="text-align: left; flex: 1; min-width: 0;">
+                            <div style="display: flex; align-items: baseline; gap: 16px; flex-wrap: nowrap;">
+                                <h3 style="margin: 0; font-size: 1.1rem; font-family: var(--font-display); letter-spacing: 0.5px; color: var(--green); text-transform: capitalize; white-space: nowrap;">Solo Camper Service</h3>
+                                <span style="font-size: 1.7rem; font-weight: 800; font-family: 'Outfit', sans-serif; color: var(--brown); white-space: nowrap;">€ 10</span>
+                            </div>
+                            <p style="margin: 4px 0 0; font-size: 0.9rem; color: var(--text-mid);">Servizio singolo di carico e scarico acque</p>
+                        </div>
+                    </div>
+                    <div class="prezzo-card extra-card fallback-item" style="margin: 24px auto 0; max-width: 600px; padding: 24px 32px; display: flex; justify-content: space-between; align-items: center; background: white;">
+                        <div style="text-align: left; flex: 1; min-width: 0;">
+                            <div style="display: flex; align-items: baseline; gap: 16px; flex-wrap: nowrap;">
+                                <h3 style="margin: 0; font-size: 1.1rem; font-family: var(--font-display); letter-spacing: 0.5px; color: var(--green); text-transform: capitalize; white-space: nowrap;">Lavatrice</h3>
+                                <span style="font-size: 1.7rem; font-weight: 800; font-family: 'Outfit', sans-serif; color: var(--brown); white-space: nowrap;">€ 5</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Inline script to handle tabs if CMS JSON load fails (local viewing) -->
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    setTimeout(function() {
+                        const tabs = document.querySelectorAll('.prezzi-tabs .prezzi-tab');
+                        const contents = [
+                            document.getElementById('fallback-bassa'),
+                            document.getElementById('fallback-media'),
+                            document.getElementById('fallback-alta')
+                        ];
+                        // Only run fallback logic if CMS didn't clear the fallback items
+                        if (contents[0] && tabs.length > 0) {
+                            tabs.forEach((tab, index) => {
+                                tab.addEventListener('click', () => {
+                                    tabs.forEach(t => t.classList.remove('active'));
+                                    tab.classList.add('active');
+                                    contents.forEach(c => { if(c) c.style.display = 'none'; });
+                                    if (contents[index]) contents[index].style.display = 'block';
+                                });
+                            });
+                        }
+                    }, 500); // Wait for CMS to try loading
+                });
+            </script>
+            </div>
+        </div>
+    </section>
 
     <!-- ===================== CONTATTI ===================== -->
     <section id="contatti" class="section-contatti">
