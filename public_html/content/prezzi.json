@@ -12,7 +12,7 @@
     },
     {
       "nome": "media",
-      "periodo": "dal 01.03 al 30.04",
+      "periodo": "dal 01.03 al 30.04 e dal 11.09 al 07.01",
       "prezzo_standard": "€ 20",
       "prezzo_senza_corrente": "€ 17",
       "color_class": "media-stagione"
@@ -31,7 +31,7 @@
       "prezzo": "€ 10"
     },
     {
-      "nome": "lavatrice",
+      "nome": "lavatrice (non ancora disponibile)",
       "prezzo": "€ 5"
     }
   ]
